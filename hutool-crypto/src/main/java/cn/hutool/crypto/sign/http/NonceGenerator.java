@@ -1,5 +1,7 @@
 package cn.hutool.crypto.sign.http;
 
+import cn.hutool.core.util.IdUtil;
+
 import java.util.UUID;
 
 /**
@@ -13,12 +15,7 @@ public interface NonceGenerator {
 	/**
 	 * UUID Nonce生成器。
 	 */
-	NonceGenerator UUID_GENERATOR = new NonceGenerator() {
-		@Override
-		public String generateNonce() {
-			return UUID.randomUUID().toString().replace("-", "");
-		}
-	};
+	NonceGenerator UUID_GENERATOR = IdUtil::fastUUID;
 
 	/**
 	 * 生成Nonce。

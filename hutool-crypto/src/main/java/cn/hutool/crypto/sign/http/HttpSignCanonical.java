@@ -91,7 +91,7 @@ class HttpSignCanonical {
 				percentEncode(rawValue, charset, false, false)
 			));
 		}
-		Collections.sort(canonicalQueryParams, new Comparator<CanonicalQueryParam>() {
+		canonicalQueryParams.sort(new Comparator<CanonicalQueryParam>() {
 			@Override
 			public int compare(final CanonicalQueryParam param1, final CanonicalQueryParam param2) {
 				final int nameCompare = param1.rawName.compareTo(param2.rawName);
@@ -124,11 +124,7 @@ class HttpSignCanonical {
 			if (config.getSignHeaderNames().isSignatureHeader(name) || false == config.isSignedHeader(lowerName)) {
 				continue;
 			}
-			List<String> values = signedHeaders.get(lowerName);
-			if (null == values) {
-				values = new ArrayList<>();
-				signedHeaders.put(lowerName, values);
-			}
+			List<String> values = signedHeaders.computeIfAbsent(lowerName, k -> new ArrayList<>());
 			if (null != entry.getValue()) {
 				for (final String value : entry.getValue()) {
 					checkHeader(name, value);
